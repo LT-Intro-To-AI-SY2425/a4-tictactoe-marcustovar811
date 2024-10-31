@@ -10,7 +10,7 @@ class TTTBoard:
             represent moves by player 'O' and '*'s are spots no one has yet played on
     """
 
-    pass
+    
 
 
 def play_tic_tac_toe() -> None:
