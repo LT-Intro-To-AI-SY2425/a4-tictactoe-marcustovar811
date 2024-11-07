@@ -1,7 +1,3 @@
-# NOTE: Until you fill in the TTTBoard class mypy is going to give you multiple errors
-# talking about unimplemented class attributes, don't worry about this as you're working
-
-
 class TTTBoard:
     """A tic tac toe board
 
@@ -9,8 +5,46 @@ class TTTBoard:
         board - a list of '*'s, 'X's & 'O's. 'X's represent moves by player 'X', 'O's
             represent moves by player 'O' and '*'s are spots no one has yet played on
     """
+    def __init__(self) -> None:
+        self.board = ['*']* 9
 
+    def __str__(self) -> str:
+        s = ""
+        for x in [0, 3, 6]:
+            s += self.board[x + 0] + " " + self.board[x + 1] + " " + self.board[x + 2] + "\n"
+        return s 
     
+    def make_move(self, player, pos) -> bool:
+        if pos > 8 or pos < 0 or self.board[pos] != '*':
+            return False
+        
+        self.board[pos] = player
+        return True
+    
+    def has_won(self, player) -> bool:
+        ps = [player] * 3 # either ['x', 'x', 'x'] or ['o', 'o', 'o']
+        # Check horizontal
+        if self.board[0:3] == ps or self.board[3:6] == ps or self.board[6:] == ps:
+            return True
+        # Check vertical
+        if self.board[::3] == ps or self.board[1::3] == ps or self.board[2::3] == ps:
+            return True
+        
+        # Check diagonal
+        if self.board[::4] == ps or self.board[2:7:2] == ps:
+            return True
+        
+        return False
+    
+    def game_over(self) -> bool:
+        if self.has_won("X") or self.has_won("O") or "*" not in self.board:
+            return True
+        return False
+    
+    def clear(self) -> None:
+        self.board = ["*"] * 9 
+        
+ 
 
 
 def play_tic_tac_toe() -> None:
@@ -69,7 +103,7 @@ if __name__ == "__main__":
     brd.make_move("X", 5)
     brd.make_move("O", 6)
     brd.make_move("X", 2)
-
+    print(brd)
     assert brd.has_won("X") == True
     assert brd.has_won("O") == False
     assert brd.game_over() == True
@@ -89,4 +123,4 @@ if __name__ == "__main__":
     print("All tests passed!")
 
     # uncomment to play!
-    # play_tic_tac_toe()
+    play_tic_tac_toe()
